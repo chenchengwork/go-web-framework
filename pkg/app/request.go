@@ -4,16 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/chenchengwork/go-web-framework/pkg/e"
 	"github.com/chenchengwork/go-web-framework/pkg/logging"
 	"github.com/chenchengwork/go-web-framework/pkg/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"net/http"
 )
 
 func MarkErrors(c *gin.Context, err error) string {
-	appG := Gin{C: c}
 	var errStr string
 
 	switch err.(type) {
@@ -28,7 +25,7 @@ func MarkErrors(c *gin.Context, err error) string {
 
 	logging.Error(err)
 
-	appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, errStr)
+	ResponseAuthFailed(c, "参数校验失败", errStr)
 
 	return errStr
 }

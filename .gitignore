@@ -2,3 +2,5 @@
 .DS_Store
 
 runtime/*
+!runtime/www
+!runtime/www/*

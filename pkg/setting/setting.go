@@ -2,6 +2,7 @@ package setting
 
 import (
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/go-ini/ini"
@@ -18,10 +19,6 @@ type App struct {
 	ImageMaxSize   int
 	ImageAllowExts []string
 
-	ExportSavePath string
-	QrCodeSavePath string
-	FontSavePath   string
-
 	LogSavePath string
 	LogSaveName string
 	LogFileExt  string
@@ -33,6 +30,7 @@ var AppSetting = &App{}
 type Server struct {
 	RunMode      string
 	HttpPort     int
+	HttpsPort    int
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
@@ -61,8 +59,27 @@ type Redis struct {
 var RedisSetting = &Redis{}
 
 type Cookie struct {
-	Name   string
-	MaxAge int
+	Name     string
+	Path     string
+	Secure   bool
+	HttpOnly bool
+	MaxAge   int
+	SameSite string
+}
+
+func (c *Cookie) GetSameSite() http.SameSite {
+	switch c.SameSite {
+	case "strict":
+		return http.SameSiteStrictMode
+
+	case "lax":
+		return http.SameSiteLaxMode
+	case "none":
+		return http.SameSiteNoneMode
+	default:
+		return http.SameSiteDefaultMode
+
+	}
 }
 
 var CookieSetting = &Cookie{}

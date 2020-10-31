@@ -11,7 +11,7 @@ type authParams struct {
 }
 
 // 检验参数
-func GetAuth(c *gin.Context) {
+func Login(c *gin.Context) {
 	err := c.ShouldBindQuery(&authParams{
 		Username: c.Query("username"),
 		Password: c.Query("password"),
