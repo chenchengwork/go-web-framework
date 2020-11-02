@@ -4,3 +4,7 @@
 runtime/*
 !runtime/www
 !runtime/www/*
+!runtime/ssl
+!runtime/ssl/*
+!runtime/database
+!runtime/database/*

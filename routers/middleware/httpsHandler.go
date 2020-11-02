@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"github.com/chenchengwork/go-web-framework/pkg/logging"
 	"github.com/gin-gonic/gin"
 	"github.com/unrolled/secure"
 )
@@ -15,6 +16,8 @@ func HttpsHandler() gin.HandlerFunc {
 
 		// If there was an error, do not continue.
 		if err != nil {
+			logging.Error(err)
+			c.Abort()
 			return
 		}
 

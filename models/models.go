@@ -6,6 +6,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
 	"github.com/chenchengwork/go-web-framework/pkg/setting"
 	"time"
@@ -23,11 +24,22 @@ type Model struct {
 // Setup initializes the database instance
 func Setup() {
 	var err error
-	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		setting.DatabaseSetting.User,
-		setting.DatabaseSetting.Password,
-		setting.DatabaseSetting.Host,
-		setting.DatabaseSetting.Name))
+	switch setting.DatabaseSetting.Type {
+	case "mysql":
+		db, err = gorm.Open(
+			setting.DatabaseSetting.Type,
+			fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+				setting.DatabaseSetting.User,
+				setting.DatabaseSetting.Password,
+				setting.DatabaseSetting.Host,
+				setting.DatabaseSetting.Name),
+		)
+	case "sqlite3":
+		db, err = gorm.Open(
+			setting.DatabaseSetting.Type,
+			setting.AppSetting.RuntimeRootPath+setting.DatabaseSetting.SQLiteDB,
+		)
+	}
 
 	if err != nil {
 		log.Fatalf("models.Setup err: %v", err)

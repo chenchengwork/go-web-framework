@@ -44,6 +44,7 @@ type Database struct {
 	Host        string
 	Name        string
 	TablePrefix string
+	SQLiteDB    string
 }
 
 var DatabaseSetting = &Database{}
