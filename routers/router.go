@@ -22,6 +22,9 @@ func InitRouter() *gin.Engine {
 	// 设置静态资源访问目录
 	r.StaticFS("/static", http.Dir(setting.AppSetting.RuntimeRootPath+"www"))
 
+	// 配置反向代理
+	r.Any("/proxy", middleware.ReverseProxyHandler("127.0.0.1", "80"))
+
 	// 配置访问api
 	r.GET("/login", auth_filter.Login, api.Auth.Login)
 
